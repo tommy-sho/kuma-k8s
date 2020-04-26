@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package proto;
+
+option go_package = ".;proto";
+
+service GatewayServer {
+    rpc GetUser (GetUserRequest) returns (GetUserResponse) {}
+}
+
+message GetUserRequest {
+    string id = 1;
+}
+
+message GetUserResponse {
+    string id = 1;
+    string name = 2;
+    string description = 3;
+    repeated string timeline = 4;
+}

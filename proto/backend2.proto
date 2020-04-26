@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package proto;
+
+option go_package = ".;proto";
+
+service BackendServer2 {
+    rpc UserTimeline (UserTimelineRequest) returns (UserTimelineResponse) {}
+}
+
+message UserTimelineRequest {
+    string id = 1;
+}
+
+message UserTimelineResponse {
+    string id = 1;
+    repeated string texts = 2;
+}

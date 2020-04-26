@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+option go_package = ".;proto";
+
+service BackendServer {
+    rpc UserDetail (UserDetailRequest) returns (UserDetailResponse) {}
+}
+
+message UserDetailRequest {
+    string id = 1;
+}
+
+message UserDetailResponse {
+    string id = 1;
+    string name = 2;
+    string description = 3;
+}
