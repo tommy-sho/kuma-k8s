@@ -1,0 +1,31 @@
+apiVersion: kuma.io/v1alpha1
+kind: Dataplane
+mesh: default
+metadata:
+  name: gateway-7bb4d8dff4-jxdvc
+  namespace: application
+
+spec:
+  networking:
+    address: 10.52.2.13
+    inbound:
+      - port: 50001
+        servicePort: 50000
+        tags:
+          app: gateway
+          protocol: tcp
+          service: gateway-service.application.svc:50000
+    outbound:
+      - address: 10.55.241.156
+        port: 50000
+        service: backend-service.application.svc:50000
+      - address: 10.55.255.19
+        port: 50000
+        service: backend2-service.application.svc:50000
+      - address: 10.55.255.185
+        port: 50000
+        service: gateway-service.application.svc:50000
+    transparentProxying:
+      redirectPort: 15001
+
+

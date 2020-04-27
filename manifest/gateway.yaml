@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gateway
+  namespace: application
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: gateway
+  template:
+    metadata:
+      labels:
+        app: gateway
+      annotations:
+        kuma.io/mesh: default
+    spec:
+      containers:
+        - name: server
+          image: gateway
+          ports:
+            - containerPort: 50000
+          env:
+            - name: BACKEND
+              value: "backend-service:50000"
+            - name: BACKEND2
+              value: "backend2-service:50000"
+          resources:
+            requests:
+              cpu: 100m
+              memory: 64Mi
+            limits:
+              cpu: 100m
+              memory: 64Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: gateway-service
+  namespace: application
+#  annotations:
+#    50000.service.kuma.io/protocol: "tcp"
+spec:
+  selector:
+    app: gateway
+  ports:
+    - name: "http-port"
+      targetPort: 50000
+      port: 50000

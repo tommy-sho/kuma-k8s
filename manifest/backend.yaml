@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend
+  namespace: application
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+      annotations:
+        kuma.io/mesh: default
+    spec:
+      containers:
+        - name: server
+          image: backend
+          ports:
+            - containerPort: 50000
+          resources:
+            requests:
+              cpu: 100m
+              memory: 64Mi
+            limits:
+              cpu: 100m
+              memory: 64Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend-service
+  namespace: application
+#  annotations:
+#    50000.service.kuma.io/protocol: "tcp"
+#    tier: backend
+spec:
+  selector:
+    app: backend
+  ports:
+    - name: "http-port"
+      port: 50000
+      targetPort: 50000
